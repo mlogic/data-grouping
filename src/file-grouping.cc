@@ -130,31 +130,18 @@ Clusters* agg_clustering(AccessGroups& ags, size_t cluster_max_size) {
           a_cluster != b_cluster) {
           if (block_ranges_size(*a_cluster) + block_ranges_size(*b_cluster)
               <= cluster_max_size) {
-//                cout << "Merging a and b" << endl;
                 merge_clusters(result, a_cluster, b_cluster);
-          } else {
-//            cout << "Can't merge " << **a_cluster << " and " << **b_cluster
-//              << " due to size limit" << endl;
           }
       } else if (a_cluster != result->end() &&
           b_cluster == result->end() ) {
           if (block_ranges_size(*a_cluster) + block_range_size(b) <= cluster_max_size) {
-//              cout << "Adding " << b << " to " << **a_cluster << endl;
               (*a_cluster)->insert(b);
-          } else {
-//           cout << "Can't add " << b << " to " << **a_cluster << " due to size limit."
-//               << endl;
           }
       } else if (a_cluster == result->end() &&
           b_cluster != result->end()) {
           if (block_ranges_size(*b_cluster) + block_range_size(a) <= cluster_max_size) {
-//              cout << "Adding " << a << " to " << **b_cluster << endl;
               (*b_cluster)->insert(a);
-          } else {
-//              cout << "Can't add " << a << " to " << **b_cluster << " due to size limit."
-//                  << endl;
           }
-
       } else {
           // a_cluster == NULL && b_cluster == NULL
           // check each BRs to see if any still has space
@@ -175,7 +162,6 @@ Clusters* agg_clustering(AccessGroups& ags, size_t cluster_max_size) {
             // TODO: size limit check here
             BlockRanges *brs = new BlockRanges((*i)->brs_->begin(),
                 (*i)->brs_->end());
-  //          cout << "Creating a new cluster " << *brs << endl;
             result->push_back(brs);
           }
       }
